@@ -4,6 +4,7 @@ from pydantic import ValidationError
 
 from app.models.context.customer_history import CustomerHistory
 
+#A valid object can be created correctly
 def test_valid_customer_history():
 
     history = CustomerHistory(
@@ -18,8 +19,9 @@ def test_valid_customer_history():
     assert history.total_successful_payments == 10
     assert history.total_failed_payments == 3
     assert history.previous_recoveries == 2
+    assert history.last_successful_payment_at is not None
 
-
+#Every history record must belong to a customer
 def test_customer_id_cannot_be_empty():
 
     with pytest.raises(ValidationError):
@@ -30,7 +32,7 @@ def test_customer_id_cannot_be_empty():
             previous_recoveries=2
         )
 
-
+#Payment counts cannot go below `0` 
 def test_successful_payments_cannot_be_negative():
 
     with pytest.raises(ValidationError):
@@ -41,7 +43,7 @@ def test_successful_payments_cannot_be_negative():
             previous_recoveries=2
         )
 
-
+#Failure counts cannot go below `0` 
 def test_failed_payments_cannot_be_negative():
 
     with pytest.raises(ValidationError):
@@ -52,7 +54,7 @@ def test_failed_payments_cannot_be_negative():
             previous_recoveries=2
         )
 
-
+#Recovery count cannot go below `0`
 def test_previous_recoveries_cannot_be_negative():
 
     with pytest.raises(ValidationError):
@@ -63,7 +65,7 @@ def test_previous_recoveries_cannot_be_negative():
             previous_recoveries=-1
         )
 
-
+#A customer may never have completed a successful payment
 def test_last_successful_payment_can_be_none():
 
     history = CustomerHistory(
