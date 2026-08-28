@@ -13,3 +13,9 @@ class FailureType(str, Enum):
     INSUFFICIENT_FUNDS = "insufficient_funds"
     PERSISTENT_FAILURE = "persistent_failure"
     PAYMENT_METHOD_ERROR = "payment_method_error"
+    
+class PaymentMethodStatusType(str, Enum):
+    ACTIVE = "active"
+    TEMPORARILY_UNAVAILABLE = "temporarily_unavailable"
+    EXPIRED = "expired"
+    BLOCKED = "blocked"
